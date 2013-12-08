@@ -54,7 +54,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.synced_folder "../../", File.join(WP_INSTALL_DIR, HOSTNAME), create: true, owner: SSH_USER_NAME, group: SSH_USER_NAME
 
   config.omnibus.chef_version = :latest
-  config.hostsupdater.remove_on_suspend = true
 
   config.vm.provision :chef_solo do |chef|
     chef.cookbooks_path = ["../site-cookbooks", "../cookbooks"]
