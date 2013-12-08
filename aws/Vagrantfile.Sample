@@ -1,0 +1,78 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+VAGRANTFILE_API_VERSION = "2"
+
+# AWS
+AWS_ACCESS_KEY_ID     = ""
+AWS_SECRET_ACCESS_KEY = ""
+AWS_PRIVATE_KEY_PATH  = ""
+AWS_KEYPAIR_NAME      = ""
+AWS_REGION            = "ap-northeast-1"
+AWS_INSTANCE_TYPE     = "t1.micro"
+AWS_AMI               = "ami-3f32ac3e" # ubuntu 12.04
+AWS_SECURITY_GROUP    = ""
+
+# Server
+HOSTNAME       = ""
+SSH_USER_NAME  = "ubuntu"
+WP_INSTALL_DIR = File.join("/home/", SSH_USER_NAME)
+
+# Wordpress
+WP_TITLE       = ""
+WP_ADMIN_USER  = ""
+WP_ADMIN_PASS  = ""
+WP_ADMIN_EMAIL = ""
+
+# MySQL
+MYSQL_ROOT_PASSWORD = ""
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  config.vm.box = "dummy"
+
+  config.vm.provider :aws do |aws, override|
+    aws.access_key_id = AWS_ACCESS_KEY_ID
+    aws.secret_access_key = AWS_SECRET_ACCESS_KEY
+    aws.keypair_name = AWS_KEYPAIR_NAME
+
+    aws.region = AWS_REGION
+    aws.instance_type = AWS_INSTANCE_TYPE
+    # ubuntu 12.04
+    aws.ami = AWS_AMI
+    aws.security_groups = [AWS_SECURITY_GROUP]
+    aws.tags = {
+      'Name' => HOSTNAME
+    }
+    # aws.iam_instance_profile_name = ""
+    # aws.use_iam_profile = ""
+    # aws.subnet_id = ""
+    # aws.private_ip_address = ""
+    override.ssh.username = SSH_USER_NAME
+    override.ssh.private_key_path = AWS_PRIVATE_KEY_PATH
+  end
+
+  config.vm.synced_folder "../../", File.join(WP_INSTALL_DIR, HOSTNAME), create: true, owner: SSH_USER_NAME, group: SSH_USER_NAME
+
+  config.omnibus.chef_version = :latest
+  config.hostsupdater.remove_on_suspend = true
+
+  config.vm.provision :chef_solo do |chef|
+    chef.cookbooks_path = ["../site-cookbooks", "../cookbooks"]
+    chef.json = {
+      :wp_install => {
+        :user_name      => SSH_USER_NAME,
+        :install_dir    => WP_INSTALL_DIR,
+        :server_root    => File.join(WP_INSTALL_DIR, HOSTNAME),
+        :server_name    => HOSTNAME,
+        :wp_title       => WP_TITLE,
+        :wp_admin_user  => WP_ADMIN_USER,
+        :wp_admin_pass  => WP_ADMIN_PASS,
+        :wp_admin_email => WP_ADMIN_EMAIL
+      },
+      :mysql => {
+        :root_password => MYSQL_ROOT_PASSWORD
+      }
+    }
+    chef.add_recipe "wp-install"
+  end
+end

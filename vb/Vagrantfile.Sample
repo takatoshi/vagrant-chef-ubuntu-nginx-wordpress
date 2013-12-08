@@ -1,0 +1,56 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+VAGRANTFILE_API_VERSION = "2"
+
+# Server
+HOSTNAME       = ""
+SSH_USER_NAME  = "vagrant"
+IP_ADDRESS     = "192.168.56.100"
+WP_INSTALL_DIR = File.join("/home/", SSH_USER_NAME)
+
+# Wordpress
+WP_TITLE       = ""
+WP_ADMIN_USER  = ""
+WP_ADMIN_PASS  = ""
+WP_ADMIN_EMAIL = ""
+
+# MySQL
+MYSQL_ROOT_PASSWORD = ""
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  config.vm.provider :virtualbox do |vb|
+    vb.name = HOSTNAME
+  end
+
+  config.vm.box = "precise64"
+  config.vm.box_url = "http://files.vagrantup.com/precise64.box"
+  config.vm.network :private_network, ip: IP_ADDRESS
+  config.vm.hostname = HOSTNAME
+
+  config.vm.synced_folder "../../", File.join(WP_INSTALL_DIR, HOSTNAME), create: true, owner: SSH_USER_NAME, group: SSH_USER_NAME
+
+  config.omnibus.chef_version = :latest
+  config.hostsupdater.remove_on_suspend = true
+
+  config.vm.provision :chef_solo do |chef|
+    chef.cookbooks_path = ["../site-cookbooks", "../cookbooks"]
+    chef.json = {
+      :wp_install => {
+        :user_name      => SSH_USER_NAME,
+        :install_dir    => WP_INSTALL_DIR,
+        :server_root    => File.join(WP_INSTALL_DIR, HOSTNAME),
+        :server_name    => HOSTNAME,
+        :wp_title       => WP_TITLE,
+        :wp_admin_user  => WP_ADMIN_USER,
+        :wp_admin_pass  => WP_ADMIN_PASS,
+        :wp_admin_email => WP_ADMIN_EMAIL
+      },
+      :mysql => {
+        :root_password => MYSQL_ROOT_PASSWORD
+      }
+    }
+    chef.add_recipe "wp-install"
+  end
+
+end
