@@ -3,4 +3,6 @@ Vagrantfile
 .chef/
 /cookbooks/
 /nodes/
-wordpress.sql
+*.sql
+wordpress_import.sh
+wordpress_export.sh

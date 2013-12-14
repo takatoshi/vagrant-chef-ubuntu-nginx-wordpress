@@ -1,0 +1,9 @@
+#!/bin/sh
+USER=
+HOST=
+ID_FILE=
+MYSQL_USER=
+MYSQL_PASS=
+MYSQL_HOST=
+ssh -i $ID_FILE $USER@$HOST "mysqldump -u$MYSQL_USER -p$MYSQL_PASS -h$MYSQL_HOST wordpress wp_usermeta wp_term_taxonomy wp_term_relationships wp_terms wp_posts wp_postmeta wp_options wp_links wp_comments wp_commentmeta > ~/wordpress.sql"
+scp -i $ID_FILE $USER@$HOST:~/wordpress.sql ../site-cookbooks/wp-install/templates/default/wordpress.sql
