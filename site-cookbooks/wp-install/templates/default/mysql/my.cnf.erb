@@ -4,7 +4,7 @@
 # You can copy this to one of:
 # - "/etc/mysql/my.cnf" to set global options,
 # - "~/.my.cnf" to set user-specific options.
-# 
+#
 # One can use all long options that the program supports.
 # Run program with --help to get a list of available options and with
 # --print-defaults to see which it would actually understand and use.
@@ -19,6 +19,7 @@
 [client]
 port		= 3306
 socket		= /var/run/mysqld/mysqld.sock
+default-character-set = utf8
 
 # Here is entries for some specific programs
 # The following values assume you have at least 32M ram
@@ -106,16 +107,19 @@ max_binlog_size         = 100M
 # ssl-ca=/etc/mysql/cacert.pem
 # ssl-cert=/etc/mysql/server-cert.pem
 # ssl-key=/etc/mysql/server-key.pem
-
-
+skip-character-set-client-handshake
+character-set-server = utf8
+collation-server = utf8_general_ci
 
 [mysqldump]
 quick
 quote-names
 max_allowed_packet	= 16M
+default-character-set = utf8
 
 [mysql]
 #no-auto-rehash	# faster start of mysql but no tab completition
+default-character-set = utf8
 
 [isamchk]
 key_buffer		= 16M
