@@ -37,8 +37,9 @@ vi vb/Vagrantfile
 # 本番環境のEC2、サーバー、WordPress、MySQL情報を入力
 vi aws/Vagrantfile
 
-# サーバー接続設定、MySQL情報を入力
+# 本番環境のサーバー接続設定、MySQL情報を入力
 vi vb/wordrepss_import.sh
+# 開発環境のサーバー接続設定、MySQL情報を入力
 vi aws/wordpress_export.sh
 ```
 ## VirtualBoxに開発環境構築
