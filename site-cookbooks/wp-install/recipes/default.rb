@@ -149,7 +149,7 @@ end
 
 # import wp db {{{
 template "#{node['wp_install']['install_dir']}/wordpress.sql" do
-  source "wordpress.sql.erb"
+  source "wordpress.sql"
   owner node['wp_install']['user_name']
   group node['wp_install']['user_name']
   mode "0600"

@@ -3,3 +3,4 @@ Vagrantfile
 .chef/
 /cookbooks/
 /nodes/
+wordpress.sql
