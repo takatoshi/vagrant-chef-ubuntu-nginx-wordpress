@@ -42,15 +42,46 @@ vi vb/wordrepss_import.sh
 # 開発環境のサーバー接続設定、MySQL情報を入力
 vi aws/wordpress_export.sh
 ```
-## VirtualBoxに開発環境構築
+## VirtualBoxで開発
+
+### 初回
 ```
 cd vb
-# 本番環境のwordpressのDBをダンプ、templateに格納
+# 既に他サーバーでWordPressを使っている場合、
+# そこのWordPressのDBをダンプ、templateに格納
 ./wordpress_import.sh
 vagrant up
 ```
 
+### 初回以降
+#### vm起動
+```
+cd vb
+vagrant up
+```
+
+#### vm停止
+```
+cd vb
+vagrant halt
+```
+
+#### vm除去
+```
+cd vb
+vagrant destroy
+```
+
+#### 本番環境のDB同期
+```
+cd vb
+./wordpress_import.sh
+vagrant up
+vagrant provision
+```
+
 ## EC2にデプロイ
+### 初回
 ```
 cd aws
 # 開発環境のwordpressのDBをダンプ、templateに格納
@@ -58,7 +89,7 @@ cd aws
 vagrant up
 ```
 
-## 開発後のデプロイ
+## 初回以降
 ```
 # 開発環境でWordPressのアップデート、プラグインインストール、テーマ編集など
 cd aws
