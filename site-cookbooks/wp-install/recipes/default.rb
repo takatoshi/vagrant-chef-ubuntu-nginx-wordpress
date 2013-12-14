@@ -93,9 +93,9 @@ directory "/usr/share/wp-cli" do
 end
 
 remote_file File.join("/usr/share/wp-cli", 'installer.sh') do
-  source 'http://wp-cli.org/installer.sh'
+  source 'https://raw.github.com/wp-cli/wp-cli.github.com/master/installer.sh'
   mode 0755
-  action :create_if_missing
+  action :create
 end
 
 bin = ::File.join("/usr/share/wp-cli", 'bin', 'wp')
