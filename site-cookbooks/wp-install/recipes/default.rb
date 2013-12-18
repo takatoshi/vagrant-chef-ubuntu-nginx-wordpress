@@ -153,14 +153,12 @@ template "#{node['wp_install']['install_dir']}/wordpress.sql" do
   owner node['wp_install']['user_name']
   group node['wp_install']['user_name']
   mode "0600"
-  notifies :run, "bash[wp db import]", :immediately
 end
 
 bash "wp db import" do
   code <<-EOH
+  sed -i 's/#{node['wp_install']['other_hostname']}/#{node['wp_install']['server_name']}/g' #{node['wp_install']['install_dir']}/wordpress.sql
   mysql -uroot -p#{node['mysql']['root_password']} wordpress < #{node['wp_install']['install_dir']}/wordpress.sql
-  mysql -uroot -p#{node['mysql']['root_password']} wordpress -e "update wp_options set option_value='http://#{node['wp_install']['server_name']}' where wp_options.option_id=3;"
-  mysql -uroot -p#{node['mysql']['root_password']} wordpress -e "update wp_options set option_value='http://#{node['wp_install']['server_name']}' where wp_options.option_id=39;"
   EOH
 end
 # }}}
