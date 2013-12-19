@@ -157,6 +157,7 @@ end
 
 bash "wp db import" do
   code <<-EOH
+  sed -i 's/#{node['wp_install']['other_hostname']}/#{node['wp_install']['server_name']}/g' #{node['wp_install']['install_dir']}/#{node['wp_install']['server_name']}/sitemap.xml
   sed -i 's/#{node['wp_install']['other_hostname']}/#{node['wp_install']['server_name']}/g' #{node['wp_install']['install_dir']}/wordpress.sql
   mysql -uroot -p#{node['mysql']['root_password']} wordpress < #{node['wp_install']['install_dir']}/wordpress.sql
   EOH
