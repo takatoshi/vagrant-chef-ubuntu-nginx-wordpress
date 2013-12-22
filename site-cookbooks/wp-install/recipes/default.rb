@@ -64,6 +64,14 @@ template "/etc/mysql/my.cnf" do
   notifies :restart, "service[mysql]"
 end
 
+# script to keep gzipped file up to date
+template "#{node['wp_install']['install_dir']}/gzip_generator.sh" do
+  source "gzip_generator.sh.erb"
+  owner node['wp_install']['user_name']
+  group node['wp_install']['user_name']
+  mode 00755
+end
+
 execute 'assign-root-password' do
   command "/usr/bin/mysqladmin -u root password #{node['mysql']['root_password']}"
   action :run
@@ -163,3 +171,8 @@ bash "wp db import" do
   EOH
 end
 # }}}
+
+execute "create gzipped file" do
+  command "./gzip_generator.sh"
+  cwd node['wp_install']['install_dir']
+end
