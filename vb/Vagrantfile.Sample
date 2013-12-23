@@ -47,7 +47,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         :wp_admin_user  => WP_ADMIN_USER,
         :wp_admin_pass  => WP_ADMIN_PASS,
         :wp_admin_email => WP_ADMIN_EMAIL,
-        :other_hostname => LIVEHOSTNAME
+        :other_hostname => LIVEHOSTNAME,
         :language       => WP_LANG
       },
       :mysql => {
