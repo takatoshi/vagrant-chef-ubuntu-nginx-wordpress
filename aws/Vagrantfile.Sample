@@ -14,18 +14,20 @@ AWS_AMI               = "ami-3f32ac3e" # ubuntu 12.04
 AWS_SECURITY_GROUP    = ""
 
 # Server
-HOSTNAME       = ""
+HOSTNAME       = "live.wordpress.com"
+DEVHOSTNAME    = "dev.wordpress.com"
 SSH_USER_NAME  = "ubuntu"
 WP_INSTALL_DIR = File.join("/home/", SSH_USER_NAME)
 
 # Wordpress
-WP_TITLE       = ""
-WP_ADMIN_USER  = ""
-WP_ADMIN_PASS  = ""
+WP_TITLE       = "Hello WordPress"
+WP_ADMIN_USER  = "wordpress"
+WP_ADMIN_PASS  = "wordpress"
 WP_ADMIN_EMAIL = ""
+WP_LANG        = "ja"
 
 # MySQL
-MYSQL_ROOT_PASSWORD = ""
+MYSQL_ROOT_PASSWORD = "root"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box = "dummy"
@@ -66,7 +68,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         :wp_title       => WP_TITLE,
         :wp_admin_user  => WP_ADMIN_USER,
         :wp_admin_pass  => WP_ADMIN_PASS,
-        :wp_admin_email => WP_ADMIN_EMAIL
+        :wp_admin_email => WP_ADMIN_EMAIL,
+        :other_hostname => DEVHOSTNAME,
+        :language       => WP_LANG
       },
       :mysql => {
         :root_password => MYSQL_ROOT_PASSWORD
