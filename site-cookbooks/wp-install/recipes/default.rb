@@ -136,7 +136,7 @@ bash "wp core config" do
     wp core config \\
     --dbname=wordpress \\
     --dbuser=root \\
-    --dbpass=#{node['mysql']['root_password']}
+    --dbpass=#{node['mysql']['root_password']} \\
     --locale=#{node['wp_install']['language']}
   EOH
 end
