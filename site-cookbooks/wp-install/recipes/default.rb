@@ -37,6 +37,13 @@ service "mysql" do
   supports [:restart, :reload, :status]
 end
 
+directory "/var/cache/nginx/cache" do
+  owner "root"
+  group "root"
+  mode 00755
+  recursive true
+end
+
 nginxFiles = %w{nginx.conf sites-available/default}
 nginxFiles.each do |file|
   template "/etc/nginx/#{file}" do
@@ -176,4 +183,8 @@ end
 execute "create gzipped file" do
   command "./gzip_generator.sh"
   cwd node['wp_install']['install_dir']
+end
+
+execute "remove cache" do
+  command "rm -rf /var/cache/nginx/cache/*"
 end
