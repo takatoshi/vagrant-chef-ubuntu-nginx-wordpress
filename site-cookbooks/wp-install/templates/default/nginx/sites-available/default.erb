@@ -185,4 +185,8 @@ server {
 		fastcgi_pass_header "X-Accel-Redirect";
 		fastcgi_pass_header "X-Accel-Expires";
 	}
+
+  location ~ .*\.(jpg|gif|png|css|js|ico|woff) {
+    expires 15m;
+  }
 }
