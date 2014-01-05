@@ -142,6 +142,9 @@ server {
 
 	location / {
 		proxy_pass http://backend;
+		set $do_not_cache <%= node['nginx']['do_not_cache'] %>;
+		proxy_no_cache $do_not_cache;
+		proxy_cache_bypass $do_not_cache;
 		proxy_cache zone;
 		proxy_cache_key $scheme$proxy_host$uri$is_args$args;
 		proxy_cache_valid  200 1d;

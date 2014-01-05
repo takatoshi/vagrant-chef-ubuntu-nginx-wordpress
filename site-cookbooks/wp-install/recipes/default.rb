@@ -85,21 +85,6 @@ execute 'assign-root-password' do
   only_if "/usr/bin/mysql -u root -e 'show databases;'"
 end
 
-service "nginx" do
-  action [:start, :enable]
-end
-
-service "php5-fpm" do
-  action [:restart]
-end
-
-service "mysql" do
-  action [:restart]
-end
-
-service "apache2" do
-  action :stop
-end
 # }}}
 
 # wp install {{{
@@ -187,4 +172,20 @@ end
 
 execute "remove cache" do
   command "rm -rf /var/cache/nginx/cache/*"
+end
+
+service "nginx" do
+  action [:restart]
+end
+
+service "php5-fpm" do
+  action [:restart]
+end
+
+service "mysql" do
+  action [:restart]
+end
+
+service "apache2" do
+  action :stop
 end

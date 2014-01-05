@@ -29,6 +29,9 @@ WP_LANG        = "ja"
 # MySQL
 MYSQL_ROOT_PASSWORD = "root"
 
+# Nginx
+NGINX_DO_NOT_CACHE = 0
+
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box = "dummy"
 
@@ -74,6 +77,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       },
       :mysql => {
         :root_password => MYSQL_ROOT_PASSWORD
+      },
+      :nginx => {
+        :do_not_cache => NGINX_DO_NOT_CACHE
       }
     }
     chef.add_recipe "wp-install"
