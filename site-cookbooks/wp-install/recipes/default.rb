@@ -18,7 +18,7 @@ execute "apt-get update" do
   command "apt-get update"
 end
 
-packages = %w{git vim nginx mysql-server php5 php5-fpm php5-mysql php-pear php5-curl curl}
+packages = %w{git vim nginx mysql-server php5 php5-fpm php5-mysql php-pear php5-curl curl optipng}
 packages.each do |pkg|
   package pkg do
     action :install
@@ -71,9 +71,9 @@ template "/etc/mysql/my.cnf" do
   notifies :restart, "service[mysql]"
 end
 
-# script to keep gzipped file up to date
-template "#{node['wp_install']['install_dir']}/gzip_generator.sh" do
-  source "gzip_generator.sh.erb"
+# script to optimize png and keep gzipped file up to date
+template "#{node['wp_install']['install_dir']}/optimize_static_file.sh" do
+  source "optimize_static_file.sh.erb"
   owner node['wp_install']['user_name']
   group node['wp_install']['user_name']
   mode 00755
@@ -165,8 +165,8 @@ bash "wp db import" do
 end
 # }}}
 
-execute "create gzipped file" do
-  command "./gzip_generator.sh"
+execute "optimize static file" do
+  command "./optimize_static_file.sh"
   cwd node['wp_install']['install_dir']
 end
 
