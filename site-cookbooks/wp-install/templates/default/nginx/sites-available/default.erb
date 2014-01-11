@@ -152,7 +152,7 @@ server {
 
 	location ~ .*\.(html?|jpe?g|gif|png|css|js|ico|woff) {
 		access_log off;
-		expires 10d;
+		expires <%= node['nginx']['expire']; %>;
 	}
 
 	location /wp-admin {

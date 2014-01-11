@@ -37,8 +37,8 @@ http {
 	# Gzip Settings
 	##
 
-	gzip on;
-	gzip_static on;
+	gzip <%= node['nginx']['gzip'] %>;
+	gzip_static <%= node['nginx']['gzip_static'] %>;
 	gzip_disable "msie6";
 	gzip_min_length 1000;
 	gzip_vary on;
