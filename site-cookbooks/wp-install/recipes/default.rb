@@ -18,7 +18,7 @@ execute "apt-get update" do
   command "apt-get update"
 end
 
-packages = %w{git vim nginx mysql-server php5 php5-fpm php5-mysql php-pear php5-curl curl optipng}
+packages = %w{git vim mysql-server php5 php5-fpm php5-mysql php-pear php5-curl curl optipng}
 packages.each do |pkg|
   package pkg do
     action :install
