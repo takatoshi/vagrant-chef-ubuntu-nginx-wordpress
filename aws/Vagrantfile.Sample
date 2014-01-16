@@ -80,6 +80,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       },
       :mode => MODE
     }
+    chef.add_recipe "nginx"
     chef.add_recipe "wp-install"
   end
 end
