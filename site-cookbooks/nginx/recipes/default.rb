@@ -10,7 +10,7 @@ execute "apt-get update" do
   command "apt-get update"
 end
 
-packages = %w{build-essential zlib1g-dev libpcre3 libpcre3-dev unzip libsp-gxmlcpp-dev libgd2-xpm-dev libgeoip-dev}
+packages = %w{build-essential zlib1g-dev libpcre3 libpcre3-dev unzip libsp-gxmlcpp-dev libgd2-xpm-dev libgeoip-dev libssl-dev}
 packages.each do |pkg|
   package pkg do
     action :install
