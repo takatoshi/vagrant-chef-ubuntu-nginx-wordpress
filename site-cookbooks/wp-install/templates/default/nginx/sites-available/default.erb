@@ -165,6 +165,32 @@ server {
 	location ~ /\.ht {
 		deny all;
 	}
+
+	pagespeed on;
+
+	# Needs to exist and be writable by nginx.
+	pagespeed FileCachePath /var/ngx_pagespeed_cache;
+
+	# Ensure requests for pagespeed optimized resources go to the pagespeed handler
+	# and no extraneous headers get set.
+	location ~ "\.pagespeed\.([a-z]\.)?[a-z]{2}\.[^.]{10}\.[^.]+" {
+		add_header "" "";
+	}
+	location ~ "^/ngx_pagespeed_static/" { }
+	location ~ "^/ngx_pagespeed_beacon$" { }
+	location /ngx_pagespeed_statistics { allow 127.0.0.1; deny all; }
+	location /ngx_pagespeed_global_statistics { allow 127.0.0.1; deny all; }
+	location /ngx_pagespeed_message { allow 127.0.0.1; deny all; }
+	location /pagespeed_console { allow 127.0.0.1; deny all; }
+
+	pagespeed RewriteLevel PassThrough;
+	pagespeed EnableFilters move_css_above_scripts,move_css_to_head;
+	pagespeed EnableFilters combine_css,rewrite_css,fallback_rewrite_css_urls;
+	pagespeed EnableFilters inline_css,extend_cache_css;
+	pagespeed EnableFilters rewrite_javascript,combine_javascript;
+	pagespeed EnableFilters defer_javascript,inline_javascript;
+	pagespeed EnableFilters lazyload_images;
+	pagespeed LazyloadImagesAfterOnload on;
 }
 
 server {
