@@ -33,6 +33,15 @@ bash "Download ngx_pagespeed" do
   not_if { ::Dir.exists?("/usr/share/nginx/ngx_pagespeed-1.7.30.2-beta") }
 end
 
+bash "Download ngx_cache_purge" do
+  cwd "/usr/share/nginx"
+  code <<-EOH
+  wget http://labs.frickle.com/files/ngx_cache_purge-2.1.tar.gz
+  tar -xzvf ngx_cache_purge-2.1.tar.gz
+  EOH
+  not_if { ::Dir.exists?("/usr/share/nginx/ngx_cache_purge-2.1") }
+end
+
 bash "Download and build nginx" do
   cwd "/usr/share/nginx"
   code <<-EOH
@@ -66,7 +75,8 @@ bash "Download and build nginx" do
   --with-md5=/usr/include/openssl \
   --with-mail \
   --with-mail_ssl_module \
-  --add-module=/usr/share/nginx/ngx_pagespeed-1.7.30.2-beta
+  --add-module=/usr/share/nginx/ngx_pagespeed-1.7.30.2-beta \
+  --add-module=/usr/share/nginx/ngx_cache_purge-2.1
   make
   make install
   EOH

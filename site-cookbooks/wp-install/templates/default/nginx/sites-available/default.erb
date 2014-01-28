@@ -146,7 +146,7 @@ server {
 		proxy_no_cache $do_not_cache;
 		proxy_cache_bypass $do_not_cache;
 		proxy_cache zone;
-		proxy_cache_key $scheme$proxy_host$uri$is_args$args;
+		proxy_cache_key $scheme://$host$uri$is_args$args;
 		proxy_cache_valid  200 1d;
 	}
 
@@ -160,6 +160,10 @@ server {
 	}
 	location /wp-login.php {
 		proxy_pass http://backend;
+	}
+
+	location ~ /purge(/.*) {
+		proxy_cache_purge zone "$scheme://$host$1$is_args$args";
 	}
 
 	location ~ /\.ht {
