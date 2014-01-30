@@ -37,7 +37,7 @@ service "mysql" do
   supports [:restart, :reload, :status]
 end
 
-directory "/var/cache/nginx/cache" do
+directory "/var/cache/nginx" do
   owner "root"
   group "root"
   mode 00755
