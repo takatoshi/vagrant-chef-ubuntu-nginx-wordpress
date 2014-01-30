@@ -170,10 +170,6 @@ execute "optimize static file" do
   cwd node['wp_install']['install_dir']
 end
 
-execute "remove cache" do
-  command "rm -rf /var/cache/nginx/cache/*"
-end
-
 service "nginx" do
   action [:restart]
 end

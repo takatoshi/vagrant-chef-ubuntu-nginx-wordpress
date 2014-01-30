@@ -163,6 +163,8 @@ server {
 	}
 
 	location ~ /purge(/.*) {
+		allow 127.0.0.1;
+		deny all;
 		proxy_cache_purge zone "$scheme://$host$1$is_args$args";
 	}
 
