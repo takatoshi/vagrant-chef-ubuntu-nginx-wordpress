@@ -152,7 +152,7 @@ server {
 
 	location ~ .*\.(html?|jpe?g|gif|png|css|js|ico|woff) {
 		access_log off;
-		expires <%= node['nginx']['expire']; %>;
+		expires <%= node['nginx']['expire'] %>;
 	}
 
 	location /wp-admin {
@@ -172,7 +172,7 @@ server {
 		deny all;
 	}
 
-	pagespeed on;
+	pagespeed <%= node['nginx']['pagespeed'] %>;
 
 	# Needs to exist and be writable by nginx.
 	pagespeed FileCachePath /var/ngx_pagespeed_cache;
