@@ -170,6 +170,13 @@ execute "optimize static file" do
   cwd node['wp_install']['install_dir']
 end
 
+bash "remove nginx proxy cache and ngx_pagespeed_cache" do
+  code <<-EOH
+  rm -rf /var/cache/nginx/*
+  rm -rf /var/ngx_pagespeed_cache/*
+  EOH
+end
+
 service "nginx" do
   action [:restart]
 end
