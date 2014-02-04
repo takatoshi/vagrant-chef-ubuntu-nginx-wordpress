@@ -172,7 +172,7 @@ end
 
 bash "remove nginx proxy cache and ngx_pagespeed_cache" do
   code <<-EOH
-  rm -rf /var/cache/nginx/*
+  rm -rf /var/run/nginx-cache/*
   rm -rf /var/ngx_pagespeed_cache/*
   EOH
 end
