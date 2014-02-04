@@ -12,7 +12,6 @@ http {
 	##
 	# Basic Settings
 	##
-
 	sendfile <%= node['nginx']['sendfile'] %>;
 	tcp_nopush on;
 	tcp_nodelay on;
@@ -29,14 +28,12 @@ http {
 	##
 	# Logging Settings
 	##
-
 	access_log /var/log/nginx/access.log;
 	error_log /var/log/nginx/error.log;
 
 	##
 	# Gzip Settings
 	##
-
 	gzip <%= node['nginx']['gzip'] %>;
 	gzip_static <%= node['nginx']['gzip_static'] %>;
 	gzip_disable "msie6";
@@ -63,12 +60,17 @@ http {
 
 	#passenger_root /usr;
 	#passenger_ruby /usr/bin/ruby;
-	proxy_cache_path /var/cache/nginx levels=1 keys_zone=zone:4m inactive=7d max_size=50m;
+
+	##
+	# Fastcgi_cache Settings
+	##
+	fastcgi_cache_path /var/run/nginx-cache levels=1:2 keys_zone=WORDPRESS:4m inactive=7d max_size=50m;
+	fastcgi_cache_key "$scheme$request_method$host$request_uri";
+	fastcgi_cache_use_stale error timeout invalid_header http_500;
 
 	##
 	# Virtual Host Configs
 	##
-
 	include /etc/nginx/conf.d/*.conf;
 	include /etc/nginx/sites-enabled/*;
 }
