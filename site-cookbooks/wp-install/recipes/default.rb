@@ -165,16 +165,16 @@ bash "wp db import" do
 end
 # }}}
 
-execute "optimize static file" do
-  command "./optimize_static_file.sh"
-  cwd node['wp_install']['install_dir']
-end
-
 bash "remove nginx proxy cache and ngx_pagespeed_cache" do
   code <<-EOH
   rm -rf /var/run/nginx-cache/*
   rm -rf /var/ngx_pagespeed_cache/*
   EOH
+end
+
+execute "optimize static file" do
+  command "./optimize_static_file.sh"
+  cwd node['wp_install']['install_dir']
 end
 
 service "nginx" do
