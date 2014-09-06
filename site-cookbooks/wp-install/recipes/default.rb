@@ -71,7 +71,7 @@ template "/etc/mysql/my.cnf" do
   notifies :restart, "service[mysql]"
 end
 
-# script to optimize png and keep gzipped file up to date
+# script that optimise png file and keep gzipped file up to date
 template "#{node['wp_install']['install_dir']}/optimize_static_file.sh" do
   source "optimize_static_file.sh.erb"
   owner node['wp_install']['user_name']
@@ -92,23 +92,14 @@ directory "/usr/share/wp-cli" do
   recursive true
 end
 
-remote_file File.join("/usr/share/wp-cli", 'installer.sh') do
-  source 'https://raw.github.com/wp-cli/wp-cli.github.com/master/installer.sh'
+remote_file File.join("/usr/share/wp-cli", 'wp-cli.phar') do
+  source 'https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar'
   mode 0755
   action :create
 end
 
-bin = ::File.join("/usr/share/wp-cli", 'bin', 'wp')
-
-bash 'install wp-cli' do
-  code './installer.sh'
-  cwd "/usr/share/wp-cli"
-  environment 'INSTALL_DIR' => "/usr/share/wp-cli"
-  creates bin
-end
-
 link "/usr/bin/wp" do
-  to bin
+  to "/usr/share/wp-cli/wp-cli.phar"
 end
 
 execute "create database" do
