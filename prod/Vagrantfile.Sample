@@ -25,6 +25,7 @@ WP_ADMIN_USER  = "wordpress"
 WP_ADMIN_PASS  = "wordpress"
 WP_ADMIN_EMAIL = ""
 WP_LANG        = "ja"
+WP_REPOSITORY  = ""
 
 # MySQL
 MYSQL_ROOT_PASSWORD = "root"
@@ -34,6 +35,7 @@ MODE = "live"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box = "dummy"
+  config.vm.box_url = "https://github.com/mitchellh/vagrant-aws/raw/master/dummy.box"
 
   config.vm.provider :aws do |aws, override|
     aws.access_key_id = AWS_ACCESS_KEY_ID
@@ -42,7 +44,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     aws.region = AWS_REGION
     aws.instance_type = AWS_INSTANCE_TYPE
-    # ubuntu 12.04
     aws.ami = AWS_AMI
     aws.security_groups = [AWS_SECURITY_GROUP]
     aws.tags = {
@@ -54,13 +55,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     # aws.private_ip_address = ""
     override.ssh.username = SSH_USER_NAME
     override.ssh.private_key_path = AWS_PRIVATE_KEY_PATH
+    override.ssh.pty = true
   end
-
-  config.vm.synced_folder "../../", File.join(WP_INSTALL_DIR, HOSTNAME), create: true, owner: SSH_USER_NAME, group: SSH_USER_NAME
 
   config.omnibus.chef_version = :latest
 
   config.vm.provision :chef_solo do |chef|
+    chef.synced_folder_type ='rsync'
     chef.cookbooks_path = ["../site-cookbooks", "../cookbooks"]
     chef.json = {
       :wp_install => {
@@ -68,6 +69,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         :install_dir    => WP_INSTALL_DIR,
         :server_root    => File.join(WP_INSTALL_DIR, HOSTNAME),
         :server_name    => HOSTNAME,
+        :repository     => WP_REPOSITORY,
         :wp_title       => WP_TITLE,
         :wp_admin_user  => WP_ADMIN_USER,
         :wp_admin_pass  => WP_ADMIN_PASS,

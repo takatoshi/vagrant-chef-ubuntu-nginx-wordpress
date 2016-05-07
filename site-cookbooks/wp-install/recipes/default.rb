@@ -25,6 +25,14 @@ packages.each do |pkg|
   end
 end
 
+git "#{node['wp_install']['server_root']}" do
+  repository "#{node['wp_install']['repository']}"
+  ssh_wrapper "#{node['wp_install']['install_dir']}/.ssh/ssh4bitbucket.sh"
+  user node['wp_install']['user_name']
+  group node['wp_install']['user_name']
+  enable_submodules true
+end
+
 service "nginx" do
   supports [:restart, :reload, :status]
 end
